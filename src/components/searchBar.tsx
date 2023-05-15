@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 interface SearchBarProps {
   city: string;
   setCity: (city: string) => void;
@@ -10,6 +10,7 @@ const SearchBar: React.FC<SearchBarProps> = ({city, setCity}) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
+        <Icon name="search" size={20} color="#aaa" style={styles.icon} />
         <TextInput
           onChangeText={setCity}
           value={city}
@@ -41,6 +42,12 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 2,
     elevation: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    paddingLeft: 16,
+    paddingRight: 8,
   },
   searchInput: {
     flex: 1,
@@ -48,5 +55,4 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 });
-
 export default SearchBar;
