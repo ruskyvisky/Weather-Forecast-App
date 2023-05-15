@@ -16,9 +16,12 @@ This project is a weather application developed using React Native and TypeScrip
 
 
 ## Installation 
-''' git clone https://github.com/ruskyvisky/Weather-Forecast-App
-''' npm install 
-''' npm start
+
+ `git clone https://github.com/ruskyvisky/Weather-Forecast-App
+
+` npm install 
+
+` npm start
 
 
 ## Project Photos
