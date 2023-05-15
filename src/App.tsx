@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  Keyboard,
 } from 'react-native';
 import axios from 'axios';
 import apiKey from '../config/dotenv';
 import WeatherTemperature from './components/weatherTemp';
-
+import WeatherRecommendationCard from './components/weatherRecommendation';
+import Error from './components/error';
 export default function App() {
   const [city, setCity] = useState('');
   const [weather, setWeather] = useState(null);
@@ -24,7 +26,7 @@ export default function App() {
   const getWeather = async () => {
     const api = apiKey;
     const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api}&units=metric`;
-
+    Keyboard.dismiss();
     try {
       const response = await axios.get(url);
       setWeather(response.data.main.temp);
@@ -58,9 +60,12 @@ export default function App() {
           <Text style={styles.buttonText}>Show</Text>
         </TouchableOpacity>
         {weather !== null && (
-          <WeatherTemperature temperature={weather}></WeatherTemperature>
+          <>
+            <WeatherTemperature temperature={weather}></WeatherTemperature>
+            <WeatherRecommendationCard weatherCondition={weatherBg} />
+          </>
         )}
-        {error !== null && <Text style={styles.error}>{error}</Text>}
+        {error !== null && <Error />}
       </View>
     </ImageBackground>
   );
