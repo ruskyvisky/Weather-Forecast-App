@@ -1,7 +1,12 @@
 import React, {useRef, useEffect} from 'react';
-import {Animated, StyleSheet, Text} from 'react-native';
+import {Animated, StyleSheet} from 'react-native';
 
-const WeatherTemperature = ({temperature}) => {
+interface WeatherTemperatureProps {
+  temperature: string | null;
+}
+const WeatherTemperature: React.FC<WeatherTemperatureProps> = ({
+  temperature,
+}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -10,7 +15,7 @@ const WeatherTemperature = ({temperature}) => {
       duration: 1000,
       useNativeDriver: true,
     }).start();
-  }, []);
+  }, [fadeAnim]);
 
   return (
     <Animated.Text style={[styles.temperature, {opacity: fadeAnim}]}>

@@ -3,9 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 const WeatherRecommendationCard = () => {
- 
-
-
   return (
     <View style={styles.card}>
       <View style={styles.iconContainer}>

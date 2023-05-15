@@ -2,7 +2,13 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const WeatherRecommendationCard = ({weatherCondition}) => {
+interface WeatherRecommendationCardProps {
+  weatherCondition: string | null;
+}
+
+const WeatherRecommendationCard: React.FC<WeatherRecommendationCardProps> = ({
+  weatherCondition,
+}) => {
   let icon = null;
   let recommendation = '';
 

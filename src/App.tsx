@@ -16,8 +16,8 @@ import WeatherRecommendationCard from './components/weatherRecommendation';
 import Error from './components/error';
 export default function App() {
   const [city, setCity] = useState('');
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState(null);
+  const [weather, setWeather] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [weatherBg, setWeatherBg] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(
     require('./images/nodata.jpg'),
@@ -36,7 +36,6 @@ export default function App() {
     } catch (error) {
       setWeather(null);
       setError('Şehir bulunamadı.');
-      console.log(error);
     }
   };
   useEffect(() => {
@@ -61,7 +60,7 @@ export default function App() {
         </TouchableOpacity>
         {weather !== null && (
           <>
-            <WeatherTemperature temperature={weather}></WeatherTemperature>
+            <WeatherTemperature temperature={weather} />
             <WeatherRecommendationCard weatherCondition={weatherBg} />
           </>
         )}
