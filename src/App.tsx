@@ -1,118 +1,72 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
+import {useState} from 'react';
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import SearchBar from './components/searchBar';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import axios from 'axios';
+import apiKey from '../config/dotenv';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default function App() {
+  const [city, setCity] = useState('');
+  const [weather, setWeather] = useState(null);
+  const [error, setError] = useState(null);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const getWeather = async () => {
+    const api = apiKey;
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api}&units=metric`;
+    console.log(city)
+    try {
+      const response = await axios.get(url);
+      setWeather(response.data.main.temp);
+      setError(null);
+    } catch (error) {
+      setWeather(null);
+      setError('Şehir bulunamadı.');
+      console.log(error);
+    }
+  };
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View>
+      <Text style={styles.title}>Weather Forecast App</Text>
+      <SearchBar city={city} setCity={setCity} />
+      <TouchableOpacity style={styles.button} onPress={getWeather}>
+        <Text style={styles.buttonText}>Göster</Text>
+      </TouchableOpacity>
+      {weather !== null && <Text style={styles.weather}>{weather}°C</Text>}
+      {error !== null && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 }
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
+    color: 'blue',
   },
-  sectionTitle: {
+  button: {
+    backgroundColor: 'blue',
+    width: '80%',
+    height: 50,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  weather: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    marginTop: 20,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  error: {
+    color: 'red',
+    fontSize: 20,
+    marginTop: 20,
   },
 });
-
-export default App;
